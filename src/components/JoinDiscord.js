@@ -29,7 +29,7 @@ export default function JoinDiscord() {
         <Container>
           <Row>
             <Col md={12} className="text-center">
-              <img src="images/footer-logo.png"></img>
+              {/* <img src="images/footer-logo.png"></img> */}
             </Col>
 
             <Col md={12} className="text-center">

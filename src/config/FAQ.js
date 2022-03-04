@@ -41,7 +41,7 @@ export default {
     },
     {
       question:
-        "IS THERE A LIMIT TO THE NUMBER OF BAR GANG COLLECTIBLES I CAN MINT?",
+        "IS THERE A LIMIT TO THE NUMBER OF C3S NFT COLLECTIBLES I CAN MINT?",
       answer: "6",
       collapse: true,
     },

@@ -40,7 +40,7 @@ export default function NavbarHeader() {
 
   const renderButton = (
     <>
-      {active ? (
+      {!isWrongNetwork && active ? (
         <div className="connectedWallet">
           <div className="walletAddress">{account}</div>
           <button

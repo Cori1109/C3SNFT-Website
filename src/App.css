@@ -158,112 +158,6 @@ div.App div.launch-board div.clock-listgroupitem p.unit {
   /* font-weight: bolder; */
 }
 
-/*
-
-.div-mint {
-  display: flex;
-  justify-content: center;
-}
-
-.btn-mint:hover {
-  cursor: pointer;
-  width: fit-content;
-}
-
-.mint-section {
-  background: black;
-  margin: 0;
-}
-
-.mint-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
-.ethereum-container {
-  margin: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ethereum-logo {
-  width: 120px;
-}
-
-.mint-input {
-  background: transparent;
-  font-size: 35px;
-  padding: 2px 5px;
-  margin: 5px 15px;
-  width: 16%;
-  text-align: center;
-  color: white;
-}
-
-.mint-input:focus {
-  background: transparent;
-  color: white;
-}
-
-.mint-control {
-  background-color: transparent;
-  border: none;
-  font-size: 45px;
-}
-
-.mint-control:hover {
-  background: transparent;
-  border-color: #0b5ed7;
-}
-
-.mint-control:focus {
-  background: transparent;
-  border-color: #0b5ed7;
-  box-shadow: none;
-}
-
-.mint-controller-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 60px;
-}
-
-.font-1 {
-  text-align: center;
-  font-family: "Times New Roman", Times, serif !important;
-  font-weight: bold;
-  font-size: 30px;
-}
-
-.font-2 {
-  text-align: center;
-  font-family: "Times New Roman", Times, serif !important;
-  font-weight: bold;
-  font-size: 25px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.font-3 {
-  text-align: center;
-  font-family: "Times New Roman", Times, serif !important;
-  font-size: 45px;
-}
-
-.font-4 {
-  text-align: center;
-  font-family: "Times New Roman", Times, serif !important;
-  font-size: 30px;
-}
-
-.margin-top-50 {
-  margin-top: 50px;
-}
-*/
-
 .text-orange {
   color: #f7941d;
 }
@@ -385,6 +279,7 @@ div.App div.launch-board div.clock-listgroupitem p.unit {
 }
 
 .our-team-title {
+  cursor: pointer;
   font-weight: bold;
   background: -webkit-linear-gradient(315deg, #21beac, #71ce36 80%);
   -webkit-background-clip: text;
@@ -456,7 +351,7 @@ div.App div#roadmap .white-divider {
   height: 2px;
   background: white;
   width: 15rem;
-  margin: 0px auto;
+  margin: 20px auto;
 }
 
 div.App div#roadmap div.roadmapstep {
@@ -561,6 +456,7 @@ div.App div#breakdown span.circle-2 {
   right: 10px;
 }
 div.App div#breakdown div.item {
+  cursor: pointer;
   position: relative;
   transition: 0.4s all;
 }
@@ -715,6 +611,11 @@ img.posImage {
 .launch-board h3 {
   font-size: 24px;
 }
+
+.presale-mint {
+  cursor: pointer;
+}
+
 .mint-section h3 {
   font-size: 24px;
 }
@@ -781,6 +682,7 @@ a.joinUs:hover {
   padding: 0;
 }
 .socialIcons {
+  margin-top: 30px;
   justify-content: center;
   padding: 0;
 }

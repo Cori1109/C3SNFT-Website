@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Image, Row, Col, Container, Button } from "react-bootstrap";
-import { useEthers, useEtherBalance } from "@usedapp/core";
+import { useWeb3React } from "@web3-react/core";
 import PrivatesaleClock from "src/components/PrivatesaleClock";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { proofMerkle } from "src/utils/proofMerkle";
@@ -11,8 +11,7 @@ import C3SNFTABI from "src/config/C3SNFT.json";
 import { parseEther } from "ethers/lib/utils";
 
 export default function Minting() {
-  const { chainId, active, activate, account } = useEthers();
-  const balances = useEtherBalance(account);
+  const { chainId, active, activate, account } = useWeb3React();
   const [totalSupply, setTotalSupply] = useState(0);
   const [stageVal, setStageVal] = useState(0);
   const [isMintingPaused, setIsMintingPaused] = useState(true);
@@ -40,25 +39,18 @@ export default function Minting() {
   };
 
   useEffect(async () => {
-    console.log("Minting called");
-    await initialHandle();
+    if (active) {
+      await initialHandle();
+    }
   });
 
   async function initialHandle() {
-    console.log("InitialHandle called");
+    console.log("account", account);
     const _stage = parseInt(await C3SContract.CURRENT_STAGE());
     const _total = parseInt(await C3SContract.totalSupply());
     const _isPaused = await C3SContract.MINTING_PAUSED();
     const _purLimit = parseInt(await C3SContract.PURCHASE_LIMIT(_stage));
     const _price = parseFloat(await C3SContract.STAGE_PRICE(_stage)) / 10 ** 18;
-    console.log(
-      "useEffect values:",
-      _stage,
-      _total,
-      _isPaused,
-      _purLimit,
-      _price
-    );
     if (_stage) setStageVal(_stage);
     if (_purLimit) setPurchaseLimit(_purLimit);
     if (_total) setTotalSupply(_total);
@@ -72,13 +64,42 @@ export default function Minting() {
     }
   }
 
+  const getReadableErrorMsg = (error) => {
+    console.log("================");
+    console.log(error);
+    let readableErrorMsg = "Transaction Error";
+
+    if (error.message.indexOf("Address does not exist in list") > 0) {
+      readableErrorMsg = "You are not in the respective whitelist";
+    } else if (error.message.indexOf("All tokens have been minted") > 0) {
+      readableErrorMsg = "All tokens have been minted";
+    } else if (error.message.indexOf("Purchase would exceed max supply") > 0) {
+      readableErrorMsg = "Please choose less amount. Not enough tokens left";
+    } else if (error.message.indexOf("Minting is not active") > 0) {
+      readableErrorMsg = "Minting is not active. It will be resumed soon";
+    } else if (error.message.indexOf("All tokens have been minted") > 0) {
+      readableErrorMsg = "All tokens have been sold out";
+    } else if (error.message.indexOf("Purchase exceeds max allowed") > 0) {
+      if (stageVal === 0 || stageVal === 1)
+        readableErrorMsg = "You are not allowed to mint more than 2 NFTs";
+      else readableErrorMsg = "You are not allowed to mint more than 4 NFTs";
+    } else if (error.message.indexOf("ETH amount is not sufficient") > 0) {
+      readableErrorMsg = "You have insufficient funds";
+    } else if (
+      error.message.indexOf("insufficient funds for gas * price + value") > 0
+    ) {
+      readableErrorMsg = "Insufficient funds for minting";
+    }
+
+    return readableErrorMsg;
+  };
+
   async function handleMint() {
     const proof = proofMerkle(account);
     console.log(proof);
     const _price = stagePrice * cntMint;
 
     const price = parseEther(_price.toString());
-    console.log("minting Price:", price, proof);
 
     try {
       if (stageVal === 0) {
@@ -99,12 +120,10 @@ export default function Minting() {
           })
           .catch((error) => {
             console.log("error", error);
-            if (error.message.indexOf("whitelist") > 0) {
-              toast.error("You aren't whitelisted!");
-            } else if (error.message.indexOf("signature")) {
+            if (error.message.indexOf("signature") > 0) {
               toast.error("You canceled transaction!");
             } else {
-              toast.error("Transaction Error!");
+              toast.error(getReadableErrorMsg(error));
             }
           });
       } else if (stageVal === 1) {
@@ -125,10 +144,10 @@ export default function Minting() {
           })
           .catch((error) => {
             console.log(error.message);
-            if (error.message.indexOf("signature")) {
+            if (error.message.indexOf("signature") > 0) {
               toast.error("You canceled transaction!");
             } else {
-              toast.error("Transaction Error!");
+              toast.error(getReadableErrorMsg(error));
             }
           });
       }
